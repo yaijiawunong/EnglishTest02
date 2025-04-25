@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #scratch-card {
+            width: 300px;
+            height: 150px;
+            position: relative;
+            margin: 0 auto;
+        }
+        #scratch-layer {
+            width: 100%;
+            height: 100%;
+            background: #ccc;
+            cursor: pointer;
+        }
+        #result {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: red;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="scratch-card">
+        <!-- 这里是刮开后显示的内容 -->
+        <div id="result">
+            <div>
+                <h3>答案：</h3>
+                <p>Pacifier-B, Stroller-C, Onesie-D, Baby carrier-A</p>
+            </div>
+        </div>
+        <canvas id="scratch-layer"></canvas>
+    </div>
+
+    <script>
+        // 刮开效果的JavaScript代码（保持不变）
+        const canvas = document.getElementById('scratch-layer');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 300;
+        canvas.height = 150;
+
+        ctx.fillStyle = '#ccc';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        let isDrawing = false;
+        canvas.addEventListener('mousedown', () => isDrawing = true);
+        canvas.addEventListener('mouseup', () => isDrawing = false);
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 20, 0, Math.PI * 2);
+            ctx.fill();
+        });
+    </script>
+</body>
+</html>
